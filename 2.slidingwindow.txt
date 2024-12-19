@@ -1,0 +1,44 @@
+import java.util.Scanner;
+class SlidingWindowProtocol {
+    public static void main(String[] args) {
+        Scanner scanner = new Scanner(System.in);
+
+        System.out.println("Enter the total number of frames to send: ");
+        int totalFrames = scanner.nextInt();
+
+        System.out.println("Enter the window size: ");
+        int windowSize = scanner.nextInt();
+
+        int sent = 0; 
+        int ack = 0;  
+
+        while (sent < totalFrames) {
+            
+            System.out.println("Sending frames in the window:");
+            for (int i = 0; i < windowSize && sent + i < totalFrames; i++) {
+                System.out.println("Sent frame: " + (sent + i));
+            }
+
+            
+            System.out.println("Enter the number of frames acknowledged (0 to resend all): ");
+            int acknowledged = scanner.nextInt();
+
+            if (acknowledged == 0) {
+                System.out.println("No frames acknowledged. Resending all frames in the window...");
+            } else {
+                ack += acknowledged;
+                sent = ack; // Slide the window forward by the number of acknowledged frames
+                System.out.println("Acknowledged up to frame: " + (ack - 1));
+                System.out.println("Sliding window...");
+            }
+
+            
+            if (ack >= totalFrames) {
+                System.out.println("All frames successfully transmitted!");
+                break;
+            }
+        }
+
+        scanner.close();
+    }
+}

@@ -1,0 +1,66 @@
+import java.util.*;
+public class Bellmon{
+	private int d[];
+	private int n;
+	public static final int Max=999;
+
+	public Bellmon(int n){
+		this.n=n;
+		d=new int[n+1];
+	}
+	public void Bellmon_ford(int source,int a[][]){
+		for (int node=1;node<=n ;node++ ) {
+			d[node]=Max;
+		}
+		d[source]=0;
+		for (int i=1;i<=n-1 ;i++ ) {
+			for(int j=1;j<=n;j++){
+				for (int k=1;k<=n ;k++ ) {
+					if (a[j][k]!=Max) {
+						if (d[k]>d[j]+a[j][k]) {
+							d[k]=d[j]+a[j][k];
+						}
+					}
+				}
+			}
+		}
+		for(int i=1;i<=n;i++){
+			for(int j=1;j<=n;j++){
+				if(a[i][j]!=Max){
+					if(d[j]>d[i]+a[i][j]){
+						System.out.println("negetive cycle");
+					}
+				}
+			}
+		}
+		for (int v=1;v<=n ;v++ ) {
+			System.out.println("path from "+v+"to the "+source+ "is" +d[v]);
+		}
+	}
+	public static void main(String[] args) {
+		int n=0;
+		int source;
+		System.out.println("Enter how many vertices:");
+		Scanner s=new Scanner(System.in);
+		n=s.nextInt();
+		
+		System.out.println("Enter nodes:");
+		int a[][]=new int[n+1][n+1];
+		for (int i=1;i<=n ;i++ ) {
+			for (int j=1;j<=n ;j++ ) {
+				a[i][j]=s.nextInt();
+				if(i==j){
+					a[i][j]=0;
+					continue;
+				}
+				if(a[i][j]==0){
+					a[i][j]=Max;
+				}
+			}	
+		}
+		System.out.println("Enter source vertex:");
+		source=s.nextInt();
+		Bellmon b=new Bellmon(n);
+		b.Bellmon_ford(source,a);
+	}
+}
